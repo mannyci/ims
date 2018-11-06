@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+{% block menu %}Home{% endblock %}
+
+{% block body %}
+  <div class="content">
+      <a href="#">Go to admin</a>
+      {% if user.is_admin %}
+      <p>{{ user.username }}</p>
+      <p>{{ user.gravatar }}</p>
+      {% endif %}
+  </div>
+
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script>
+$(document).ready(function() {
+    $('#overviewNav').addClass('active');
+});
+</script>
+{% endblock %}

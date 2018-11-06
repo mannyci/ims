@@ -1,0 +1,134 @@
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+{% block menu %}Profile - {{ user.username }}{% endblock %}
+
+{% block body %}
+<div class="content">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card card-user">
+        <div class="image logo text-center">
+        </div>
+        <div class="card-body">
+          <div class="author">
+            <a href="#">
+              <img class="avatar border-gray" src="{{ user.gravatar }}">
+              <h5 class="title">{{ user.get_full_name }}</h5>
+            </a>
+            <p class="description">
+              {{ user.email }}
+            </p>
+          </div>
+          <p class="description text-center">
+            "I like the way you work it
+            <br> No diggity
+            <br> I wanna bag it up"
+          </p>
+        </div>
+        <div class="card-footer">
+          <hr>
+          <div class="button-container">
+            <div class="row">
+              <div class="col-lg-4 col-md-6 col-6 ml-auto">
+                <h5>Member Since</h5>
+                <p><small>{{ user.created_at }}</small></p>
+              </div>
+              <div class="col-lg-4 col-md-6 col-6 ml-auto mr-auto">
+                <h5>Last Active</h5>
+                <p><small>{{ user.updated_at }}</small></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      {% include "_messages.html" %}
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Edit Profile</h5>
+        </div>
+        <div class="card-body">
+          <form class="form-horizontal" method="post">
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            <div class="row">
+              <label class="col-md-3 col-form-label">{{ form.username.label }}</label>
+              <div class="col-md-9">
+                {% if form.username.errors %}
+                <div class="form-group has-danger">
+                {% else %}
+                <div class="form-group">
+                {% endif %}
+                  {{ form.username }}
+                  {{ form.username.errors }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-md-3 col-form-label">{{ form.email.label }}</label>
+              <div class="col-md-9">
+                {% if form.email.errors %}
+                <div class="form-group has-danger">
+                {% else %}
+                <div class="form-group">
+                {% endif %}
+                  {{ form.email }}
+                  {{ form.email.errors }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-md-3 col-form-label">{{ form.first_name.label }}</label>
+              <div class="col-md-9">
+                {% if form.first_name.errors %}
+                <div class="form-group has-danger">
+                {% else %}
+                <div class="form-group">
+                {% endif %}
+                  {{ form.first_name }}
+                  {{ form.first_name.errors }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-md-3 col-form-label">{{ form.last_name.label }}</label>
+              <div class="col-md-9">
+                {% if form.last_name.errors %}
+                <div class="form-group has-danger">
+                {% else %}
+                <div class="form-group">
+                {% endif %}
+                  {{ form.last_name }}
+                  {{ form.last_name.errors }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-md-3 col-form-label">Admin</label>
+              <div class="col-md-9">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    {{ form.is_admin }}
+                    <span class="form-check-sign"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <a class="btn btn-warning btn-round float-left" href="javascript:history.back()">Back</a>
+            <button class="btn btn-info btn-round float-right" type="submit">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+

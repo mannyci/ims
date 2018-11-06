@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% block title %}Setup{% endblock %}
+
+{% block sidebar %}
+<!-- Not needed -->
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+
+  <div class="col-md-8 mr-auto ml-auto">
+    <div class="wizard-container">
+      <div class="card wizard-card card-wizard " data-color="orange" id="wizardProfile">
+        <form action="{% url 'ui:setup' %}" method="POST">
+          <div class="card-header text-center bg-info">
+            <div class="icon-big text-center icon-warning">
+              <a href="{% url 'index' %}"><i class="nc-icon nc-settings text-warning"></i></a>
+            </div>
+            <h3 class="card-title">Set up</h3>
+          </div>
+          <div class="wizard-navigation">
+            <ul>
+              <li class="nav-item"><a class="nav-link" href="#admin" data-toggle="tab">Admin</a></li>
+              <li class="nav-item"><a class="nav-link" href="#customize" data-toggle="tab">Customize</a></li>
+            </ul>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane" id="admin">
+              <h5 class="info-text"> Let's stetup the first user </h5>
+              <div class="row justify-content-center">
+                <div class="col-sm-6">
+                  {% csrf_token %}
+                  {% include "account/_macros.html" %}
+                </div>
+              </div>
+            </div>
+              <div class="tab-pane" id="customize">
+                <h4 class="info-text"> What are you doing? (checkboxes) </h4>
+                <div class="row">
+
+
+
+                </div>
+              </div>
+          </div>
+          <div class="wizard-footer height-wizard">
+            <div class="pull-right">
+              <input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm' name='next' value='Next' />
+              <input type='submit' class='btn btn-finish btn-fill btn-warning btn-wd btn-sm' name='finish' value='Finish' />
+            </div>
+
+              <div class="pull-left">
+                  <input type='button' class='btn btn-previous btn-fill btn-default btn-wd btn-sm' name='previous' value='Previous' />
+              </div>
+          </div>
+
+        </form>
+      </div>
+    </div> <!-- wizard container -->
+
+
+  </div>
+
+
+</div>
+
+
+
+{% endblock %}
+

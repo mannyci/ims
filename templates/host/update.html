@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %}New host{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+
+	<form method="post">
+	    {% csrf_token %}
+	    {{ form }}
+	    <input type="submit" value="Submit">
+	</form>
+</div>
+{% endblock %}
