@@ -77,7 +77,7 @@ class EnvNew(View):
 		if form.is_valid():
 			form.save()
 			messages.success(request, 'Env created successfully')
-			return redirect('account:login')
+			return redirect('ui:envs')
 
 		return HttpResponse(self.template.render({'form': form}, request), status=400)
 

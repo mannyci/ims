@@ -18,7 +18,7 @@ class HostUpdateForm(forms.ModelForm):
 		model = Host
 		fields = ['name', 'ip', 'environment']
 
-class NewEnvForm(forms.Form):
+class NewEnvForm(forms.ModelForm):
 	name = forms.CharField(required=True, widget=TextInput(attrs={'class':'form-control','placeholder': 'Env name'}))
 	description = forms.CharField(required=False, widget=TextInput(attrs={'class':'form-control','placeholder': 'Description'}))
 	class Meta:
