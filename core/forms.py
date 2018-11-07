@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.widgets import TextInput, CheckboxInput, Select
+from django.forms import ValidationError
 from .models import Host, Environment
 
 class NewHostForm(forms.ModelForm):
@@ -9,6 +10,14 @@ class NewHostForm(forms.ModelForm):
 	class Meta:
 		model = Host
 		fields = ['name', 'ip', 'environment']
+
+# TODO
+	# def clean_ip(self):
+	# 	ip = self.cleaned_data['ip']
+	# 	if Host.objects.filter(ip=ip, ip__iexact=ip).exists():
+	# 		host = Host.objects.filter(ip=ip, ip__iexact=ip).values(u'name')
+	# 		raise ValidationError("Host %s with this ip already exists" % host)
+	# 	return ip
 
 class HostUpdateForm(forms.ModelForm):
 	name = forms.CharField(required=True, widget=TextInput(attrs={'class':'form-control'}))
