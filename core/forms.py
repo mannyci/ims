@@ -33,3 +33,11 @@ class NewEnvForm(forms.ModelForm):
 	class Meta:
 		model = Environment
 		fields = ['name', 'description']
+
+class EnvUpdateForm(forms.ModelForm):
+	name = forms.CharField(required=True, widget=TextInput(attrs={'class':'form-control'}))
+	description = forms.CharField(required=True, widget=TextInput(attrs={'class':'form-control'}))
+
+	class Meta:
+		model = Environment
+		fields = ['name', 'description']
