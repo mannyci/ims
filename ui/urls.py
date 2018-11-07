@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.contrib.auth.decorators import login_required
 
 from .views import overview, SetupView
-from core.views import HostCreate, HostList, HostDetail, HostDelete, EnvNew, EnvList
+from core.views import HostCreate, HostList, HostDetail, HostDelete, EnvNew, EnvList, EnvUpdate
 
 urlpatterns = [
     url(r'^setup',view=SetupView.as_view(), name='setup'),
@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^host/delete/(?P<name>[\w-]+)$',view=HostDelete.as_view(), name='deletehost'),
     url(r'^env/new$',view=EnvNew.as_view(), name='newenv'),
     url(r'^envs$',view=EnvList.as_view(), name='envs'),
+    url(r'^env/(?P<id>[\w-]+)$',view=EnvUpdate.as_view(), name='updateenv'),
 ]
