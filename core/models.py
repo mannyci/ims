@@ -11,6 +11,7 @@ class Environment(models.Model):
 
     name = models.CharField(max_length=40, unique=True)
     description = models.CharField(max_length=50, null=True)
+    added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -22,6 +23,7 @@ class Hostgroup(models.Model):
 
     name = models.CharField(max_length=40, unique=True)
     description = models.CharField(max_length=50, null=True)
+    added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -37,7 +39,7 @@ class Host(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
-    hostgroup = models.ForeignKey(Hostgroup, on_delete=models.CASCADE, null=True)
+    hostgroup = models.ManyToManyField(Hostgroup)
 
     def __str__(self):
         return self.name
