@@ -8,9 +8,10 @@ from django.template import RequestContext, loader
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
+from django.db.models import Count
 from .utils import needs_env
 from .models import Host, Environment
-from .forms import NewHostForm, HostUpdateForm, NewEnvForm
+from .forms import NewHostForm, HostUpdateForm, NewEnvForm, EnvUpdateForm
 
 class HostCreate(CreateView):
 	model = Host
@@ -50,7 +51,7 @@ class HostDetail(UpdateView):
 
 	def get_success_url(self):
 		messages.success(self.request, 'Host updated successfully')
-		return reverse('ui:updatehost', kwargs={'name':self.name})
+		return reverse('ui:hosts')
 
 class HostDelete(DeleteView):
 	model = Host
@@ -74,6 +75,7 @@ class EnvNew(View):
 
 	def post(self, request):
 		form = NewEnvForm(request.POST)
+		form.instance.added_by = self.request.user
 		if form.is_valid():
 			form.save()
 			messages.success(request, 'Env created successfully')
@@ -84,3 +86,19 @@ class EnvNew(View):
 class EnvList(ListView):
 	template_name = 'env/list.html'
 	model = Environment
+	queryset = Environment.objects.all().annotate(host_count=Count('host'))
+
+class EnvUpdate(UpdateView):
+	model = Environment
+	form_class = EnvUpdateForm
+	template_name = 'env/update.html'
+
+	def get_object(self, **kwargs):
+		self.id = self.kwargs.get("id")
+		if self.id is None:
+			raise Http404
+		return get_object_or_404(Environment, id__iexact=self.id)
+
+	def get_success_url(self):
+		messages.success(self.request, 'Environment updated successfully')
+		return reverse('ui:envs')
