@@ -30,6 +30,7 @@ class AccountManager(BaseUserManager):
 
         return account
 
+
 class Account(AbstractBaseUser):
     class Meta:
         db_table = 'accounts'
