@@ -225,12 +225,27 @@
   <script src="{% static 'js/paper-dashboard.min.js' %}" type="text/javascript"></script>
   <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
   <script src="{% static 'demo/demo.js' %}"></script>
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in static/static-for-demo/js/demo.js
-      demo.initChartsPages();
-    });
-  </script>
+
+<script>
+var toggleState = localStorage.getItem("toggleState");
+if (toggleState == 'closed'){
+  $("body").addClass('sidebar-mini');
+} else {
+  $("body").removeClass('sidebar-mini');
+}
+$('#minimizeSidebar').click(function (e) {
+  var toggleState = localStorage.getItem("toggleState");
+  console.log(toggleState)
+  if (toggleState == 'closed'){
+    localStorage.setItem("toggleState", "open");
+    $("body").removeClass('sidebar-mini');
+  } else {
+    localStorage.setItem("toggleState", "closed");
+    $("body").addClass('sidebar-mini');
+  }
+
+});
+</script>
 {% endblock %}
 </body>
 
