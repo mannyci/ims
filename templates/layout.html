@@ -70,7 +70,7 @@
           </li>
           <li id="envNav">
             <a data-toggle="collapse" href="#env" class="collapsed" aria-expanded="false">
-              <i class="nc-icon nc-app"></i>
+              <i class="nc-icon nc-box-2"></i>
               <p>
                 Environments
                 <b class="caret"></b>
@@ -230,15 +230,13 @@
 var toggleState = localStorage.getItem("toggleState");
 if (toggleState == 'closed'){
   $("body").addClass('sidebar-mini');
-} else {
-  $("body").removeClass('sidebar-mini');
 }
+
 $('#minimizeSidebar').click(function (e) {
   var toggleState = localStorage.getItem("toggleState");
-  console.log(toggleState)
   if (toggleState == 'closed'){
-    localStorage.setItem("toggleState", "open");
     $("body").removeClass('sidebar-mini');
+    localStorage.setItem("toggleState", "open");
   } else {
     localStorage.setItem("toggleState", "closed");
     $("body").addClass('sidebar-mini');
