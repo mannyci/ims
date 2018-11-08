@@ -1,11 +1,11 @@
 from django.conf.urls import url
 
-from .views import overview, SetupView
+from .views import overview, SetupView, DashboardView
 from core.views import HostCreate, HostList, HostDetail, HostDelete, EnvNew, EnvList, EnvUpdate
 
 urlpatterns = [
     url(r'^setup', view=SetupView.as_view(), name='setup'),
-    url(r'^overview', view=overview, name='overview'),
+    url(r'^overview', view=DashboardView.as_view(), name='overview'),
     url(r'^host/new$', view=HostCreate.as_view(), name='newhost'),
     url(r'^hosts$', view=HostList.as_view(), name='hosts'),
     url(r'^host/(?P<name>[\w-]+)$', view=HostDetail.as_view(), name='updatehost'),

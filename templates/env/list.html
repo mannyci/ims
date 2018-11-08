@@ -38,8 +38,8 @@
                 <td>{{ env.added_by.username }}</td>
                 <td>{{ env.host_count }}</td>
                 <td>
-                  <a href="{% url 'ui:updateenv' env.id %}" class="btn btn-warning btn-sm edit"><i class="fa fa-edit"></i></a>
-                  <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-link btn-sm remove"><i class="fa fa-times"></i></button>
+                  <a href="{% url 'ui:updateenv' env.id %}" class="btn btn-warning btn-sm edit" rel="tooltip" title="" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                  <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm remove" rel="tooltip" title="" data-original-title="Delete"><i class="fa fa-times"></i></button>
                 </td>
               </tr>
               {% empty %}
@@ -54,6 +54,7 @@
 
 </div>
 
+<!-- Delete modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
   <div class="modal-dialog" role="document">
     <form id="deleteHostForm" action="" method="post">{% csrf_token %}
