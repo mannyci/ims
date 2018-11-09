@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.widgets import TextInput, Select, SelectMultiple
 from django.forms import ValidationError
+from django.utils.safestring import mark_safe
 from .models import Host, Environment, Hostgroup
 
 
@@ -19,7 +20,9 @@ class NewHostForm(forms.ModelForm):
         ip = self.cleaned_data['ip']
         if Host.objects.filter(ip=ip, ip__iexact=ip).exists():
             host = Host.objects.get(ip=ip)
-            raise ValidationError("Host %s with this ip already exists" % host)
+            raise ValidationError(
+                mark_safe(('Host {0} with that ip already exists, click <a href="{0}">here</a>').format(host))
+            )
         return ip
 
 

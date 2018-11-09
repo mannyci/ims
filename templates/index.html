@@ -4,115 +4,199 @@
 
 {% block body %}
   <div class="content">
-<div class="row">
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-body ">
-        <div class="row">
-          <div class="col-5 col-md-4">
-            <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-globe text-warning"></i>
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-globe text-warning"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Hosts</p>
+                  <p class="card-title">{{ hosts }}
+                    </p><p>
+                </p></div>
+              </div>
             </div>
           </div>
-          <div class="col-7 col-md-8">
-            <div class="numbers">
-              <p class="card-category">Hosts</p>
-              <p class="card-title">{{ hosts }}
-                </p><p>
-            </p></div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-refresh"></i> <a href="{% url 'ui:hosts' %}">View all</a>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card-footer ">
-        <hr>
-        <div class="stats">
-          <i class="fa fa-refresh"></i> <a href="{% url 'ui:hosts' %}">View all</a>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-money-coins text-success"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Environments</p>
+                  <p class="card-title">{{ envs }}
+                    </p><p>
+                </p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-calendar-o"></i> <a href="{% url 'ui:envs' %}">View all</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-vector text-danger"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Hostgroups</p>
+                  <p class="card-title">{{ hostgroups }}
+                    </p><p>
+                </p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-clock-o"></i> In the last hour
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-favourite-28 text-primary"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Followers</p>
+                  <p class="card-title">+45K
+                    </p><p>
+                </p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-refresh"></i> Update now
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Recent Updated Hosts</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead class="text-warning">
+                <tr>
+                  <th>Name</th>
+                  <th>Environment</th>
+                  <th>Groups</th>
+                  <th>Modified</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for host in recentUpdatedHosts %}
+                <tr>
+                  <td><a href="{{ host.get_absolute_url }}">{{ host.name }}</a></td>
+                  <td><span class="badge badge-pill badge-primary">{{ host.environment }}</span></td>
+                  <td>
+                    {% for group in host.groups.all %}
+                    <span class="badge badge-pill badge-info">{{ group }}</span>
+                    {% endfor %}
+                  </td>
+                  <td>{{ host.updated_at }}</td>
+                </tr>
+                {% empty %}
+                <p>No hosts found</p>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-text">
+              <h4 class="card-title">Employees Stats</h4>
+              <p class="card-category">New employees on 15th September, 2016</p>
+            </div>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="table table-hover">
+              <thead class="text-warning">
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Salary</th>
+                  <th>Country</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Dakota Rice</td>
+                  <td>$36,738</td>
+                  <td>Niger</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Minerva Hooper</td>
+                  <td>$23,789</td>
+                  <td>Curaçao</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Sage Rodriguez</td>
+                  <td>$56,142</td>
+                  <td>Netherlands</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Philip Chaney</td>
+                  <td>$38,735</td>
+                  <td>Korea, South</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-body ">
-        <div class="row">
-          <div class="col-5 col-md-4">
-            <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-money-coins text-success"></i>
-            </div>
-          </div>
-          <div class="col-7 col-md-8">
-            <div class="numbers">
-              <p class="card-category">Environments</p>
-              <p class="card-title">{{ envs }}
-                </p><p>
-            </p></div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer ">
-        <hr>
-        <div class="stats">
-          <i class="fa fa-calendar-o"></i> <a href="{% url 'ui:envs' %}">View all</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-body ">
-        <div class="row">
-          <div class="col-5 col-md-4">
-            <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-vector text-danger"></i>
-            </div>
-          </div>
-          <div class="col-7 col-md-8">
-            <div class="numbers">
-              <p class="card-category">Errors</p>
-              <p class="card-title">23
-                </p><p>
-            </p></div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer ">
-        <hr>
-        <div class="stats">
-          <i class="fa fa-clock-o"></i> In the last hour
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card card-stats">
-      <div class="card-body ">
-        <div class="row">
-          <div class="col-5 col-md-4">
-            <div class="icon-big text-center icon-warning">
-              <i class="nc-icon nc-favourite-28 text-primary"></i>
-            </div>
-          </div>
-          <div class="col-7 col-md-8">
-            <div class="numbers">
-              <p class="card-category">Followers</p>
-              <p class="card-title">+45K
-                </p><p>
-            </p></div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer ">
-        <hr>
-        <div class="stats">
-          <i class="fa fa-refresh"></i> Update now
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
-
-  </div>
 
 {% endblock %}
 

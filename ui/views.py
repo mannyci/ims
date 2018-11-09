@@ -35,10 +35,12 @@ class DashboardView(DetailView):
         hosts = Host.objects.all().count()
         envs = Environment.objects.all().count()
         hostgroups = Hostgroup.objects.all().count()
+        recentUpdatedHosts = Host.objects.all().order_by('-updated_at')[:5]
         return HttpResponse(self.template.render({
             'hosts': hosts,
             'envs': envs,
-            'hostgroups': hostgroups
+            'hostgroups': hostgroups,
+            'recentUpdatedHosts': recentUpdatedHosts
         }, request))
 
 

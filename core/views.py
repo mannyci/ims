@@ -31,7 +31,7 @@ class HostCreate(CreateView):
         return super(HostCreate, self).form_valid(form)
 
     def get_success_url(self):
-        messages.success(self.request, 'Host %s addedd successfully' % self.form.instance.name)
+        messages.success(self.request, 'Host addedd successfully')
         return reverse('ui:hosts')
 
 
