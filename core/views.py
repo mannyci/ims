@@ -11,7 +11,7 @@ from django.views.generic.list import ListView
 from django.db.models import Count
 from .utils import needs_env
 from .models import Host, Environment
-from .forms import NewHostForm, HostUpdateForm, NewEnvForm, EnvUpdateForm
+from .forms import NewHostForm, HostUpdateForm, NewEnvForm, EnvUpdateForm, NewHostGroupForm
 
 
 class HostCreate(CreateView):
@@ -110,3 +110,20 @@ class EnvUpdate(UpdateView):
     def get_success_url(self):
         messages.success(self.request, 'Environment updated successfully')
         return reverse('ui:envs')
+
+class HostGroupNew(View):
+    template = loader.get_template('hostgroup/new.html')
+
+    def get(self, request):
+        form = NewHostGroupForm
+        return HttpResponse(self.template.render({'form': form}, request))
+
+    def post(self, request):
+        form = NewHostGroupForm(request.POST)
+        form.instance.added_by = self.request.user
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Hostgroup created successfully')
+            return redirect('ui:envs')
+
+        return HttpResponse(self.template.render({'form': form}, request), status=400)
