@@ -38,7 +38,7 @@
               <tr>
                 <td><a href="{{ host.get_absolute_url }}">{{ host.name }}</a></td>
                 <td>{{ host.ip }}</td>
-                <td><a href="{{ host.get_env_url }}">{{ host.environment }}</a></td>
+                <td><a href="{{ host.get_env_url }}" rel="tooltip" title="" data-original-title="Env: {{ host.environment }}"><span class="badge badge-pill badge-primary">{{ host.environment }}</span></a></td>
                 <td>
                   {% for group in host.groups.all %}
                   <span class="badge badge-pill badge-info">{{ group }}</span>
@@ -48,7 +48,7 @@
                 <td>{{ host.created_at|date }}</td>
                 <td>{{ host.updated_at }}</td>
                 <td>
-                  <a href="{% url 'ui:updatehost' host.name %}" class="btn btn-info btn-sm"><i class="fa fa-edit" rel="tooltip" title="" data-original-title="Edit"></i></a>
+                  <a href="{% url 'ui:updatehost' host.name %}" class="btn btn-info btn-sm" rel="tooltip" title="" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                   <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm" rel="tooltip" title="" data-original-title="Delete"><i class="fa fa-times"></i></button>
                 </td>
               </tr>
