@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.widgets import TextInput, Select
+from django.forms.widgets import TextInput, Select, SelectMultiple
 from django.forms import ValidationError
 from .models import Host, Environment, Hostgroup
 
@@ -8,11 +8,11 @@ class NewHostForm(forms.ModelForm):
     name = forms.CharField(widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Host name', 'autofocus': 'true'}))
     ip = forms.GenericIPAddressField(widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'IP'}))
     environment = forms.ModelChoiceField(queryset=Environment.objects.all(), widget=Select(attrs={'class': 'form-control'}))
-    hostgroup = forms.ModelChoiceField(required=False, queryset=Hostgroup.objects.all(), widget=Select(attrs={'class': 'form-control'}))
+    groups = forms.ModelMultipleChoiceField(required=False, queryset=Hostgroup.objects.all(), widget=SelectMultiple(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Host
-        fields = ['name', 'ip', 'environment']
+        fields = ['name', 'ip', 'environment', 'groups']
 
     def clean_ip(self):
         ip = self.cleaned_data['ip']
@@ -26,10 +26,11 @@ class HostUpdateForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=TextInput(attrs={'class': 'form-control'}))
     ip = forms.GenericIPAddressField(required=True, widget=TextInput(attrs={'class': 'form-control'}))
     environment = forms.ModelChoiceField(queryset=Environment.objects.all(), widget=Select(attrs={'class': 'form-control'}))
+    groups = forms.ModelMultipleChoiceField(required=False, queryset=Hostgroup.objects.all(), widget=SelectMultiple(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Host
-        fields = ['name', 'ip', 'environment']
+        fields = ['name', 'ip', 'environment', 'groups']
 
 
 class NewEnvForm(forms.ModelForm):
@@ -47,4 +48,12 @@ class EnvUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Environment
+        fields = ['name', 'description']
+
+class NewHostGroupForm(forms.ModelForm):
+    name = forms.CharField(required=True, widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Hostgroup name'}))
+    description = forms.CharField(required=False, widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Description'}))
+
+    class Meta:
+        model = Hostgroup
         fields = ['name', 'description']
