@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.urls import reverse
 from django.db import models
 from account.models import Account
 
@@ -39,7 +39,13 @@ class Host(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
-    hostgroup = models.ManyToManyField(Hostgroup)
+    groups = models.ManyToManyField(Hostgroup)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("ui:updatehost", kwargs={"name": self.name})
+
+    def get_env_url(self):
+        return reverse("ui:updateenv", kwargs={"id": self.environment.id})
