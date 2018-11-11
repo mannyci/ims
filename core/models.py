@@ -34,6 +34,7 @@ class Host(models.Model):
         db_table = 'hosts'
 
     name = models.CharField(max_length=40, unique=True)
+    description = models.CharField(max_length=50, null=True)
     ip = models.CharField(max_length=40, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

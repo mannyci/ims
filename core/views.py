@@ -31,7 +31,7 @@ class HostCreate(CreateView):
         return super(HostCreate, self).form_valid(form)
 
     def get_success_url(self):
-        messages.success(self.request, 'Host addedd successfully')
+        messages.success(self.request, 'Host %s addedd successfully' % self.form.instance.name)
         return reverse('ui:hosts')
 
 
@@ -53,7 +53,7 @@ class HostDetail(UpdateView):
         return get_object_or_404(Host, name__iexact=self.name)
 
     def get_success_url(self):
-        messages.success(self.request, 'Host updated successfully')
+        messages.success(self.request, 'Host %s updated successfully' % self.name)
         return reverse('ui:hosts')
 
 
@@ -68,7 +68,7 @@ class HostDelete(DeleteView):
         return get_object_or_404(Host, name__iexact=self.name)
 
     def get_success_url(self):
-        messages.success(self.request, 'Host deleted successfully')
+        messages.success(self.request, 'Host %s deleted successfully' % self.name)
         return reverse('ui:hosts')
 
 
@@ -111,7 +111,11 @@ class EnvUpdate(UpdateView):
         messages.success(self.request, 'Environment updated successfully')
         return reverse('ui:envs')
 
+
 class HostGroupNew(View):
+    """
+    Create new hostgroup
+    """
     template = loader.get_template('hostgroup/new.html')
 
     def get(self, request):
