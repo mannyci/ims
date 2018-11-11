@@ -147,57 +147,31 @@
         </div>
       </div>
       <div class="col-md-6">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-text">
-              <h4 class="card-title">Employees Stats</h4>
-              <p class="card-category">New employees on 15th September, 2016</p>
-            </div>
+        <div class="card ">
+          <div class="card-header ">
+            <h5 class="card-title">Hosts per environment</h5>
+            <p class="card-category">Last Campaign Performance</p>
           </div>
-          <div class="card-body table-responsive">
-            <table class="table table-hover">
-              <thead class="text-warning">
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Salary</th>
-                  <th>Country</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Dakota Rice</td>
-                  <td>$36,738</td>
-                  <td>Niger</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Minerva Hooper</td>
-                  <td>$23,789</td>
-                  <td>Curaçao</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Sage Rodriguez</td>
-                  <td>$56,142</td>
-                  <td>Netherlands</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Philip Chaney</td>
-                  <td>$38,735</td>
-                  <td>Korea, South</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="card-body ">
+            <canvas id="chartEmail" class="ct-chart ct-perfect-fourth" width="456" height="300"></canvas>
+          </div>
+          <div class="card-footer ">
+            <div class="legend">
+              <i class="fa fa-circle text-info"></i> Open
+            </div>
+            <hr>
+            <div class="stats">
+              <i class="fa fa-calendar"></i> Number of emails sent
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-
+{% for env in environments %}
+<p> {{ env }} hosts {{ env.host_count }}</p>
+{% endfor %}
 {% endblock %}
 
 {% block script %}
@@ -205,6 +179,70 @@
 <script>
 $(document).ready(function() {
     $('#overviewNav').addClass('active');
+});
+
+$(document).ready(function() {
+
+    ctx = document.getElementById('chartEmail').getContext("2d");
+
+    myChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        // labels: [1, 2, 3],
+        labels: [{% for env in environments %}'{{ env }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+        datasets: [{
+          label: "Emails",
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          backgroundColor: [
+            '#e3e3e3',
+            '#4acccd',
+            '#fcc468'
+          ],
+          borderWidth: 0,
+          data: [{% for env in environments %}{{ env.host_count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+        }]
+      },
+      options: {
+
+        legend: {
+
+          display: true
+        },
+
+        tooltips: {
+          enabled: true
+        },
+
+        scales: {
+          yAxes: [{
+
+            ticks: {
+              display: false
+            },
+            gridLines: {
+              drawBorder: false,
+              zeroLineColor: "transparent",
+              color: 'rgba(255,255,255,0.05)'
+            }
+
+          }],
+
+          xAxes: [{
+            barPercentage: 1.6,
+            gridLines: {
+              drawBorder: false,
+              color: 'rgba(255,255,255,0.1)',
+              zeroLineColor: "transparent"
+            },
+            ticks: {
+              display: false,
+            }
+          }]
+        },
+      }
+    });
+
 });
 </script>
 {% endblock %}

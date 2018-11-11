@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
+from django.db.models import Count
 from core.models import Host, Environment, Hostgroup
 
 
@@ -36,11 +37,13 @@ class DashboardView(DetailView):
         envs = Environment.objects.all().count()
         hostgroups = Hostgroup.objects.all().count()
         recentUpdatedHosts = Host.objects.all().order_by('-updated_at')[:5]
+        environments = Environment.objects.all().annotate(host_count=Count('host'))
         return HttpResponse(self.template.render({
             'hosts': hosts,
             'envs': envs,
             'hostgroups': hostgroups,
-            'recentUpdatedHosts': recentUpdatedHosts
+            'recentUpdatedHosts': recentUpdatedHosts,
+            'environments': environments
         }, request))
 
 
