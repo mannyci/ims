@@ -171,6 +171,7 @@
       <h5 class="card-title">Hosts per group</h5>
     </div>
     <div class="card-body">
+      <!-- For highchart -->
       <!-- <div id="groupChart"></div> -->
       <canvas id="groupChart" class="ct-chart ct-perfect-fourth"></canvas>
     </div>
@@ -180,11 +181,18 @@
 
 {% block script %}
 {{ block.super }}
-<script src="https://code.highcharts.com/highcharts.src.js"></script>
+<!-- <script src="https://code.highcharts.com/highcharts.src.js"></script> -->
 <script>
 $(document).ready(function() {
     $('#overviewNav').addClass('active');
 });
+var dynamicColors = function () {
+  var chartColours = ['#6bd09', '#f17e5', '#fcc46', '#9f9f9', '#4cbdd', '#4accc', '#e3e3e'];
+  var letters = '0123456789ABCDEF';
+  var rand = chartColours[Math.floor(Math.random() * chartColours.length)];
+  rand += letters[Math.floor(Math.random() * letters.length)];
+  return rand;
+};
 
 $(document).ready(function() {
 
@@ -199,56 +207,18 @@ $(document).ready(function() {
           pointRadius: 0,
           pointHoverRadius: 0,
           backgroundColor: [
-            '#e3e3e3',
-            '#4acccd',
-            '#fcc468'
+            {% for env in environments %}dynamicColors(){% if not forloop.last %}, {% endif %}{% endfor %}
           ],
           borderWidth: 0,
           data: [{% for env in environments %}{{ env.host_count }}{% if not forloop.last %},{% endif %}{% endfor %}]
         }]
       },
-      options: {
-
-        legend: {
-          display: true
-        },
-
-        tooltips: {
-          enabled: true
-        },
-
-        scales: {
-          yAxes: [{
-
-            ticks: {
-              display: false
-            },
-            gridLines: {
-              drawBorder: false,
-              zeroLineColor: "transparent",
-              color: 'rgba(255,255,255,0.05)'
-            }
-
-          }],
-
-          xAxes: [{
-            barPercentage: 1.6,
-            gridLines: {
-              drawBorder: false,
-              color: 'rgba(255,255,255,0.1)',
-              zeroLineColor: "transparent"
-            },
-            ticks: {
-              display: false,
-            }
-          }]
-        },
-      }
     });
 });
 </script>
 
-<script>
+<!-- Highchart bar -->
+<!-- <script>
   Highcharts.chart('groupChart', {
       chart: {
           type: 'column'
@@ -269,33 +239,30 @@ $(document).ready(function() {
           color: 'green'
       }]
   });
-</script>
+</script> -->
 <script>
 
-$(document).ready(function() {
+// bar
 
+$(document).ready(function() {
+    console.log(dynamicColors())
     ctx = document.getElementById('groupChart').getContext("2d");
 
     myChart = new Chart(ctx, {
-      type: 'pie',
+      type: 'bar',
       data: {
         labels: [
           {% for group in groupdata %}'{{ group.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
         ],
         datasets: [{
           label: "Hosts",
-          color: 'green',
-          backgroundColor: [
-            'green',
-            'yellow'
-          ],
-          borderWidth: 0,
+          backgroundColor: dynamicColors(),
           data: [
             {% for group in groupdata %}{{ group.host_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
           ]
         }]
-      }
+      },
     })
-});
+  });
 </script>
 {% endblock %}
