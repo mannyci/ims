@@ -38,12 +38,14 @@ class DashboardView(DetailView):
         hostgroups = Hostgroup.objects.all().count()
         recentUpdatedHosts = Host.objects.all().order_by('-updated_at')[:5]
         environments = Environment.objects.all().annotate(host_count=Count('host'))
+        groupdata = Hostgroup.objects.all().annotate(host_count=Count('host'))
         return HttpResponse(self.template.render({
             'hosts': hosts,
             'envs': envs,
             'hostgroups': hostgroups,
             'recentUpdatedHosts': recentUpdatedHosts,
-            'environments': environments
+            'environments': environments,
+            'groupdata': groupdata
         }, request))
 
 

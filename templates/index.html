@@ -150,15 +150,11 @@
         <div class="card ">
           <div class="card-header ">
             <h5 class="card-title">Hosts per environment</h5>
-            <p class="card-category">Last Campaign Performance</p>
           </div>
           <div class="card-body ">
-            <canvas id="chartEmail" class="ct-chart ct-perfect-fourth" width="456" height="300"></canvas>
+            <canvas id="chartEmail" class="ct-chart ct-perfect-fourth"></canvas>
           </div>
           <div class="card-footer ">
-            <div class="legend">
-              <i class="fa fa-circle text-info"></i> Open
-            </div>
             <hr>
             <div class="stats">
               <i class="fa fa-calendar"></i> Number of emails sent
@@ -169,13 +165,22 @@
     </div>
   </div>
 
-{% for env in environments %}
-<p> {{ env }} hosts {{ env.host_count }}</p>
-{% endfor %}
+<div class="col-md-6">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title">Hosts per group</h5>
+    </div>
+    <div class="card-body">
+      <!-- <div id="groupChart"></div> -->
+      <canvas id="groupChart" class="ct-chart ct-perfect-fourth"></canvas>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}
 {{ block.super }}
+<script src="https://code.highcharts.com/highcharts.src.js"></script>
 <script>
 $(document).ready(function() {
     $('#overviewNav').addClass('active');
@@ -188,10 +193,9 @@ $(document).ready(function() {
     myChart = new Chart(ctx, {
       type: 'pie',
       data: {
-        // labels: [1, 2, 3],
         labels: [{% for env in environments %}'{{ env }}'{% if not forloop.last %},{% endif %}{% endfor %}],
         datasets: [{
-          label: "Emails",
+          label: "Environments",
           pointRadius: 0,
           pointHoverRadius: 0,
           backgroundColor: [
@@ -206,7 +210,6 @@ $(document).ready(function() {
       options: {
 
         legend: {
-
           display: true
         },
 
@@ -242,7 +245,57 @@ $(document).ready(function() {
         },
       }
     });
+});
+</script>
 
+<script>
+  Highcharts.chart('groupChart', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Hostgroups chart'
+      },
+      xAxis: {
+          categories: [
+            {% for group in groupdata %}'{{ group.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+          ]
+      },
+      series: [{
+          name: 'Hosts',
+          data: [
+            {% for group in groupdata %}{{ group.host_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: 'green'
+      }]
+  });
+</script>
+<script>
+
+$(document).ready(function() {
+
+    ctx = document.getElementById('groupChart').getContext("2d");
+
+    myChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: [
+          {% for group in groupdata %}'{{ group.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+        ],
+        datasets: [{
+          label: "Hosts",
+          color: 'green',
+          backgroundColor: [
+            'green',
+            'yellow'
+          ],
+          borderWidth: 0,
+          data: [
+            {% for group in groupdata %}{{ group.host_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ]
+        }]
+      }
+    })
 });
 </script>
 {% endblock %}
