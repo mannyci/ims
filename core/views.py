@@ -5,7 +5,7 @@ from django.shortcuts import redirect, get_object_or_404, Http404
 from django.urls import reverse
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-from django.views.generic import View
+from django.views.generic import View, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.db.models import Count

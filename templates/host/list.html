@@ -113,7 +113,7 @@ function searchHost() {
 $('.remove').click(function (e) {
   host = $(this).closest('tr').find('td:first').html();
   host = host.split('<br>')[0];
-  $("#deleteHostForm").attr("action", "/ui/host/delete/" + host);
+  $("#deleteHostForm").attr("action", "/host/delete/" + host);
   $('#deleteModal .modal-body').html('Delete ' + host + ' ?');
 
 });

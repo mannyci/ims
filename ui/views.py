@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import View, DetailView
 from django.template import loader
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Count
 from core.models import Host, Environment, Hostgroup
@@ -18,15 +17,7 @@ from .utils import needs_setup
 from .forms import SetupForm
 
 
-@login_required
-def overview(request):
-    if request.user.is_authenticated():
-        return render(request, 'index.html')
-    else:
-        return redirect('account:login')
-
-
-class DashboardView(DetailView):
+class DashboardView(LoginRequiredMixin, DetailView):
     template = loader.get_template('index.html')
 
     def get(self, request):

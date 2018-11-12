@@ -10,7 +10,7 @@ class NewHostForm(forms.ModelForm):
     description = forms.CharField(required=False, widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Description'}))
     ip = forms.GenericIPAddressField(widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'IP'}))
     environment = forms.ModelChoiceField(queryset=Environment.objects.all(), widget=Select(attrs={'class': 'form-control'}))
-    groups = forms.ModelMultipleChoiceField(required=False, queryset=Hostgroup.objects.all(), widget=SelectMultiple(attrs={'class': 'form-control'}))
+    groups = forms.ModelMultipleChoiceField(required=False, queryset=Hostgroup.objects.all(), widget=SelectMultiple(attrs={'class': 'form-control'}), help_text='Select multiple groups')
 
     class Meta:
         model = Host

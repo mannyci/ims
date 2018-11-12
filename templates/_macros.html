@@ -1,5 +1,10 @@
 {% for field in form %}
-	<label>{{ field.label }}:</label>
+	<label>
+    {{ field.label }}:
+    {% if field.help_text %}
+    <i class="fa fa-question-circle" rel="tooltip" title="" data-original-title="{{ field.help_text }}"></i>
+    {% endif %}
+  </label>
   {% if field.errors %}
     <div class="form-group has-label has-danger">
       {{ field }}
