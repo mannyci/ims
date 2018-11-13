@@ -130,7 +130,11 @@
                 {% for host in recentUpdatedHosts %}
                 <tr>
                   <td><a href="{{ host.get_absolute_url }}">{{ host.name }}</a></td>
-                  <td><span class="badge badge-pill badge-primary">{{ host.environment }}</span></td>
+                  <td><a href="{% url 'ui:hosts' %}?env={{ host.environment_id }}">
+                  <span class="badge badge-pill badge-primary" rel="tooltip" title="" data-original-title="List hosts from {{ host.environment }}">
+                    {{ host.environment }}
+                  </span></a>
+                  </td>
                   <td>
                     {% for group in host.groups.all %}
                     <span class="badge badge-pill badge-info">{{ group }}</span>
@@ -163,20 +167,21 @@
         </div>
       </div>
     </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Hosts per group</h5>
+        </div>
+        <div class="card-body">
+          <!-- For highchart -->
+          <!-- <div id="groupChart"></div> -->
+          <canvas id="groupChart" class="ct-chart ct-perfect-fourth"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
 
-<div class="col-md-6">
-  <div class="card">
-    <div class="card-header">
-      <h5 class="card-title">Hosts per group</h5>
-    </div>
-    <div class="card-body">
-      <!-- For highchart -->
-      <!-- <div id="groupChart"></div> -->
-      <canvas id="groupChart" class="ct-chart ct-perfect-fourth"></canvas>
-    </div>
-  </div>
-</div>
+
 {% endblock %}
 
 {% block script %}
@@ -190,7 +195,7 @@ var dynamicColors = function () {
   var chartColours = ['#6bd09', '#f17e5', '#fcc46', '#9f9f9', '#4cbdd', '#4accc', '#e3e3e'];
   var letters = '0123456789ABCDEF';
   var rand = chartColours[Math.floor(Math.random() * chartColours.length)];
-  rand += letters[Math.floor(Math.random() * letters.length)];
+  rand += letters[Math.floor(Math.random() * 1)];
   return rand;
 };
 
@@ -256,7 +261,7 @@ $(document).ready(function() {
         ],
         datasets: [{
           label: "Hosts",
-          backgroundColor: dynamicColors(),
+          backgroundColor: '#fcc46a',
           data: [
             {% for group in groupdata %}{{ group.host_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
           ]
