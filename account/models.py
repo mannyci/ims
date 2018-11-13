@@ -47,9 +47,6 @@ class Account(AbstractUser):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
     objects = AccountManager()
 
     USERNAME_FIELD = 'username'

@@ -36,9 +36,15 @@ class HostCreate(CreateView):
 
 
 class HostList(ListView):
-    model = Host
-    paginated_by = 2
-    template_name = 'host/list.html'
+    template = loader.get_template('host/list.html')
+
+    def get(self, request):
+        env = request.GET.get('env')
+        if env:
+            hosts = Host.objects.filter(environment_id=env)
+        else:
+            hosts = Host.objects.all()
+        return HttpResponse(self.template.render({'hosts': hosts}, request))
 
 
 class HostDetail(UpdateView):
