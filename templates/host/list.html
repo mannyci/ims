@@ -38,7 +38,7 @@
               <tr>
                 <td>{{ host.name }}<br><small>{{ host.description }}</small></td>
                 <td>{{ host.ip }}</td>
-                <td><a href="{{ host.get_env_url }}" rel="tooltip" title="" data-original-title="Env: {{ host.environment }}"><span class="badge badge-pill badge-primary">{{ host.environment }}</span></a></td>
+                <td><a href="{% url 'ui:hosts' %}?env={{ host.environment_id }}" rel="tooltip" title="" data-original-title="Show hosts from: {{ host.environment }}"><span class="badge badge-pill badge-primary">{{ host.environment }}</span></a></td>
                 <td>
                   {% for group in host.groups.all %}
                   <span class="badge badge-pill badge-info">{{ group }}</span>
