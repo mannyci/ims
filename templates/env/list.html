@@ -20,7 +20,7 @@
         <div class="card-body">
           <div class="toolbar">
           </div>
-          <table id="hostTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+          <table id="hostTable" class="table table-hover table-bordered" cellspacing="0" width="100%">
             <thead>
               <tr>
                 <th>Name</th>
@@ -36,7 +36,11 @@
                 <td>{{ env.name }}</td>
                 <td>{{ env.description }}</td>
                 <td>{{ env.added_by.username }}</td>
-                <td>{{ env.host_count }}</td>
+                <td>{{ env.host_count }}
+                  <a href="{% url 'ui:hosts' %}?env={{ env.id }}">
+                    <span class="badge badge-pill badge-primary">list</span>
+                  </a>
+                </td>
                 <td>
                   <a href="{% url 'ui:updateenv' env.id %}" class="btn btn-warning btn-sm edit" rel="tooltip" title="" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                   <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm remove" rel="tooltip" title="" data-original-title="Delete"><i class="fa fa-times"></i></button>
