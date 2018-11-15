@@ -43,7 +43,7 @@ class HostList(ListView):
 
     def get(self, request, *args, **kwagrs):
         env = request.GET.get('env')
-        self.object_list = self.get_queryset()
+        self.object_list = self.get_queryset().order_by('id')
         if env:
             self.object_list = self.object_list.filter(environment_id=env)
         context = self.get_context_data()
