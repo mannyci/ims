@@ -29,6 +29,17 @@ class Hostgroup(models.Model):
         return self.name
 
 
+class HostStatus(models.Model):
+    class Meta:
+        db_table = 'hoststatus'
+
+    status = models.BooleanField(default=False, verbose_name='Host is rechable')
+    last_updated = models.DateTimeField(auto_now=True, verbose_name='Last checked')
+
+    def __str__(self):
+        return self.status
+
+
 class Host(models.Model):
     class Meta:
         db_table = 'hosts'
@@ -41,6 +52,7 @@ class Host(models.Model):
     added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
     groups = models.ManyToManyField(Hostgroup)
+    status = models.ForeignKey(HostStatus, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -50,3 +62,4 @@ class Host(models.Model):
 
     def get_env_url(self):
         return reverse("ui:updateenv", kwargs={"id": self.environment.id})
+

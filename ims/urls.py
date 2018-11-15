@@ -7,13 +7,10 @@ from django.shortcuts import redirect
 from django.contrib import admin
 from ui.utils import needs_setup
 from core.tasks import debug_task
-from .celery import debug
 
 
 # Redirect Index to ui or run first setup
 def index(request):
-    debug.delay()
-    debug_task.delay()
     if needs_setup():
         return redirect('ui:setup')
     else:
