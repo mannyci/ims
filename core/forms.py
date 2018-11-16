@@ -14,7 +14,7 @@ class NewHostForm(forms.ModelForm):
 
     class Meta:
         model = Host
-        fields = ['name', 'description', 'ip', 'environment', 'groups', 'status']
+        fields = ['name', 'description', 'ip', 'environment', 'groups']
 
     def clean_ip(self):
         ip = self.cleaned_data['ip']

@@ -6,7 +6,6 @@ from django.conf.urls import url, include
 from django.shortcuts import redirect
 from django.contrib import admin
 from ui.utils import needs_setup
-from core.tasks import debug_task
 
 
 # Redirect Index to ui or run first setup

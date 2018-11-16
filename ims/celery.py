@@ -15,15 +15,7 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'run-all-checks': {
-        'task': 'core.tasks.debug_task',
+        'task': 'core.tasks.host_status',
         'schedule': timedelta(seconds=60),
     },
-    # 'update-shifts': {
-    #     'task': 'cabot.cabotapp.tasks.update_shifts',
-    #     'schedule': timedelta(seconds=1800),
-    # },
-    # 'clean-db': {
-    #     'task': 'cabot.cabotapp.tasks.clean_db',
-    #     'schedule': timedelta(seconds=60 * 60 * 24),
-    # },
 }

@@ -52,7 +52,7 @@ class Host(models.Model):
     added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
     groups = models.ManyToManyField(Hostgroup)
-    status = models.ForeignKey(HostStatus, on_delete=models.CASCADE)
+    active = models.BooleanField(default=False, verbose_name='Host is rechable')
 
     def __str__(self):
         return self.name

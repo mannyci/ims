@@ -5,7 +5,7 @@ import os
 
 
 @task(bind=True)
-def debug_task(self):
+def host_status(self):
     hosts = Host.objects.all()
     active = 0
     dead = 0
@@ -13,9 +13,12 @@ def debug_task(self):
         ret = os.system("ping -c 1 %s" % host.ip)
         if ret != 0:
             dead += 1
-            host.status = False
+            if host.active == True:
+                host.active = False
+                host.save()
         else:
             active += 1
-            host.status = True
-        host.save()
+            if host.active == False:
+                host.active = True
+                host.save()
     return ("Completed host status check, active: %s dead: %s" % (active, dead))
