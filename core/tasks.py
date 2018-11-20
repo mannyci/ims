@@ -13,10 +13,10 @@ def host_status(self):
         ret = os.system("ping -c 1 %s >/dev/null" % host.ip)
         if ret != 0:
             dead += 1
-            status = True
+            status = False
         else:
             active += 1
-            status = False
+            status = True
         update_host_status.delay(host.id, status)
     return ("Completed host status check, active: %s dead: %s" % (active, dead))
 
@@ -26,4 +26,3 @@ def update_host_status(hostid, ret):
     instance = HostStatus.objects.get(host_id=hostid)
     instance.status = ret
     instance.save()
-

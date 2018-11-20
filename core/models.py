@@ -39,9 +39,9 @@ class HostStatus(models.Model):
 
     def __str__(self):
         if self.status is 0:
-            return 'Active'
-        else:
             return 'Dead'
+        else:
+            return 'Active'
 
 
 class Host(models.Model):
