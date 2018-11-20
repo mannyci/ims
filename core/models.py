@@ -33,11 +33,15 @@ class HostStatus(models.Model):
     class Meta:
         db_table = 'hoststatus'
 
+    host = models.OneToOneField('Host')
     status = models.BooleanField(default=False, verbose_name='Host is rechable')
-    last_updated = models.DateTimeField(auto_now=True, verbose_name='Last checked')
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.status
+        if self.status is 0:
+            return 'Active'
+        else:
+            return 'Dead'
 
 
 class Host(models.Model):
@@ -52,7 +56,6 @@ class Host(models.Model):
     added_by = models.ForeignKey(Account, on_delete=models.CASCADE)
     environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
     groups = models.ManyToManyField(Hostgroup)
-    active = models.BooleanField(default=False, verbose_name='Host is rechable')
 
     def __str__(self):
         return self.name
