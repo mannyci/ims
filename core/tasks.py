@@ -25,7 +25,7 @@ def host_status(self):
 def update_host_status(hostid, ret):
     try:
         instance = HostStatus.objects.get(host_id=hostid)
-    except:
+    except():
         host = Host.objects.get(id=hostid)
         instance = HostStatus(host=host)
     if instance.status != ret:

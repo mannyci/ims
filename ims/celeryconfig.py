@@ -10,6 +10,6 @@ CELERYBEAT_SCHEDULE = {
     'hostcheck_scheduler': {
         'task': 'core.tasks.host_status',
         'schedule': timedelta(seconds=30),
-        'options': {'expires': 20,}
-	}
+        'options': {'expires': 20}
+    }
 }
