@@ -8,7 +8,7 @@ pylint = "*"
 python-memcached = "*"
 
 [packages]
-django = "==1.11.11"
+django = "==1.11.22"
 celery = "*"
 markup = "*"
 python-ldap = "*"
