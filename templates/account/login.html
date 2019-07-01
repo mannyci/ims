@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% block title %}Login{% endblock %}
+
+{% block sidebar %}
+<!-- Not needed -->
+{% endblock %}
+
+{% block body %}
+
+<div class="content">
+  <div class="container">
+    <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+      <form method="POST">
+        <div class="card card-login">
+          {% include "_messages.html" %}
+          <div class="card-header card-header-blue text-center">
+            <a href="{% url 'index' %}"><img class="img-logo" id="img_logo" src="/static/img/logo-small.png"></a>
+            <h4 class="card-title">Login to YAFI</h4>
+          </div>
+          <div class="card-body ">
+            {% csrf_token %}
+            {% include "_macros.html" %}
+            <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input checked="" class="form-check-input" id="remember_me" name="remember_me" type="checkbox" value="y">
+                  Keep me logged in
+                  <span class="form-check-sign">
+                    <span class="check"></span>
+                  </span>
+                </label>
+                <a class="float-right brand-text" href="#">Forgot Password?</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <div class="form-group">
+              <input class="btn btn-primary btn-round float-right" type="submit" value="Log In">
+              <a class="btn btn-warning btn-round float-left" href="javascript:history.back()">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="container footer text-center">
+  <h5 class="brandlogo">YAFI</h5>
+  <p class="brand"><a href="{% url 'account:register' %}" class="brand-text">Don't have an account? Signup now!</a></p>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+
+

@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block title %}Update {{ host }}{% endblock %}
+{% block menu %}Update host{% endblock %}
+
+{% block body %}
+
+<div class="content">
+  <div class="container">
+    <div class="col-md-6 ml-auto mr-auto">
+      <form method="POST">
+        <div class="card">
+          {% include "_messages.html" %}
+          <div class="card-header">
+            <h4 class="card-title">Update : {{ host }}</h4>
+          </div>
+          <div class="card-body ">
+            {% csrf_token %}
+            {% include "_macros.html" %}
+          </div>
+          <div class="card-footer ">
+            <div class="form-group">
+              <input class="btn btn-primary btn-round float-right" type="submit" value="Update">
+              <a class="btn btn-warning btn-round float-left" href="javascript:history.back()">Back</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script>
+$(document).ready(function() {
+    $('#hostsNav').addClass('active');
+});
+</script>
+{% endblock %}

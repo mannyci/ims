@@ -1,0 +1,273 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+{% block menu %}Home{% endblock %}
+
+{% block body %}
+  <div class="content">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-globe text-warning"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Hosts</p>
+                  <p class="card-title">{{ hosts }}
+                    </p><p>
+                </p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-refresh"></i> <a href="{% url 'ui:hosts' %}">View all</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-money-coins text-success"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Environments</p>
+                  <p class="card-title">{{ envs }}
+                    </p><p>
+                </p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-calendar-o"></i> <a href="{% url 'ui:envs' %}">View all</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-vector text-danger"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Hostgroups</p>
+                  <p class="card-title">{{ hostgroups }}
+                    </p><p>
+                </p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-clock-o"></i> In the last hour
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-body ">
+            <div class="row">
+              <div class="col-5 col-md-4">
+                <div class="icon-big text-center icon-warning">
+                  <i class="nc-icon nc-favourite-28 text-primary"></i>
+                </div>
+              </div>
+              <div class="col-7 col-md-8">
+                <div class="numbers">
+                  <p class="card-category">Followers</p>
+                  <p class="card-title">+45K
+                    </p><p>
+                </p></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-refresh"></i> Update now
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Recent Updated Hosts</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead class="text-warning">
+                <tr>
+                  <th>Name</th>
+                  <th>Environment</th>
+                  <th>Groups</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for host in recentUpdatedHosts %}
+                <tr>
+                  <td><a href="{{ host.get_absolute_url }}">{{ host.name }}</a></td>
+                  <td><a href="{% url 'ui:hosts' %}?env={{ host.environment_id }}">
+                  <span class="badge badge-pill badge-primary" rel="tooltip" title="" data-original-title="List hosts from {{ host.environment }}">
+                    {{ host.environment }}
+                  </span></a>
+                  </td>
+                  <td>
+                    {% for group in host.groups.all %}
+                    <span class="badge badge-pill badge-info">{{ group }}</span>
+                    {% endfor %}
+                  </td>
+                  <td>{{ host.hoststatus }}</td>
+                </tr>
+                {% empty %}
+                <p>No hosts found</p>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card ">
+          <div class="card-header ">
+            <h5 class="card-title">Hosts per environment</h5>
+          </div>
+          <div class="card-body ">
+            <canvas id="chartEmail" class="ct-chart ct-perfect-fourth"></canvas>
+          </div>
+          <div class="card-footer ">
+            <hr>
+            <div class="stats">
+              <i class="fa fa-calendar"></i> Number of emails sent
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title">Hosts per group</h5>
+        </div>
+        <div class="card-body">
+          <!-- For highchart -->
+          <!-- <div id="groupChart"></div> -->
+          <canvas id="groupChart" class="ct-chart ct-perfect-fourth"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<!-- <script src="https://code.highcharts.com/highcharts.src.js"></script> -->
+<script>
+$(document).ready(function() {
+    $('#overviewNav').addClass('active');
+});
+var dynamicColors = function () {
+  var chartColours = ['#6bd09', '#f17e5', '#fcc46', '#9f9f9', '#4cbdd', '#4accc', '#e3e3e'];
+  var letters = '0123456789ABCDEF';
+  var rand = chartColours[Math.floor(Math.random() * chartColours.length)];
+  rand += letters[Math.floor(Math.random() * 1)];
+  return rand;
+};
+
+$(document).ready(function() {
+
+    ctx = document.getElementById('chartEmail').getContext("2d");
+
+    myChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: [{% for env in environments %}'{{ env }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+        datasets: [{
+          label: "Environments",
+          pointRadius: 0,
+          pointHoverRadius: 0,
+          backgroundColor: [
+            {% for env in environments %}dynamicColors(){% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          borderWidth: 0,
+          data: [{% for env in environments %}{{ env.host_count }}{% if not forloop.last %},{% endif %}{% endfor %}]
+        }]
+      },
+    });
+});
+</script>
+
+<!-- Highchart bar -->
+<!-- <script>
+  Highcharts.chart('groupChart', {
+      chart: {
+          type: 'column'
+      },
+      title: {
+          text: 'Hostgroups chart'
+      },
+      xAxis: {
+          categories: [
+            {% for group in groupdata %}'{{ group.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+          ]
+      },
+      series: [{
+          name: 'Hosts',
+          data: [
+            {% for group in groupdata %}{{ group.host_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ],
+          color: 'green'
+      }]
+  });
+</script> -->
+<script>
+
+// bar
+
+$(document).ready(function() {
+    console.log(dynamicColors())
+    ctx = document.getElementById('groupChart').getContext("2d");
+
+    myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [
+          {% for group in groupdata %}'{{ group.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
+        ],
+        datasets: [{
+          label: "Hosts",
+          backgroundColor: '#fcc46a',
+          data: [
+            {% for group in groupdata %}{{ group.host_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          ]
+        }]
+      },
+    })
+  });
+</script>
+{% endblock %}

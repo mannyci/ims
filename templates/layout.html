@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% block head %}
+<head>
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.ico' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.ico' %}">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>Yafi - {% block title %}Main{% endblock %}</title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <!-- CSS Files -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/paper-dashboard.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/vendor.css' %}" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="{% static 'demo/demo.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/core/jquery.min.js' %}"></script>
+</head>
+{% endblock %}
+<body class="">
+
+  <div class="wrapper ">
+    {% block sidebar %}
+    <div class="sidebar" data-color="white" data-active-color="danger">
+      <div class="logo">
+        <a href="{% url 'index' %}" class="simple-text logo-mini">
+          <div class="logo-image-small">
+            <img src="{% static 'img/logo-small.png' %}">
+          </div>
+        </a>
+        <a href="{% url 'index' %}" class="simple-text logo-normal">
+          Yafi
+        </a>
+      </div>
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          <li id="overviewNav">
+            <a href="{% url 'ui:overview' %}">
+              <i class="nc-icon nc-bank"></i>
+              <p>Overview</p>
+            </a>
+          </li>
+          <li id="hostsNav">
+            <a data-toggle="collapse" href="#newHost" class="collapsed" aria-expanded="false">
+              <i class="nc-icon nc-app"></i>
+              <p>
+                Hosts
+                <b class="caret"></b>
+              </p>
+            </a>
+            <div class="collapse" id="newHost" style="">
+              <ul class="nav">
+                <li>
+                  <a href="{% url 'ui:newhost' %}">
+                    <span class="sidebar-mini-icon">N</span>
+                    <span class="sidebar-normal"> New </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'ui:hosts' %}">
+                    <span class="sidebar-mini-icon">L</span>
+                    <span class="sidebar-normal"> List </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li id="envNav">
+            <a data-toggle="collapse" href="#env" class="collapsed" aria-expanded="false">
+              <i class="nc-icon nc-box-2"></i>
+              <p>
+                Environments
+                <b class="caret"></b>
+              </p>
+            </a>
+            <div class="collapse" id="env" style="">
+              <ul class="nav">
+                <li>
+                  <a href="{% url 'ui:newenv' %}">
+                    <span class="sidebar-mini-icon">N</span>
+                    <span class="sidebar-normal"> New </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'ui:envs' %}">
+                    <span class="sidebar-mini-icon">L</span>
+                    <span class="sidebar-normal"> List </span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+        <div class="container-fluid">
+          <div class="navbar-wrapper">
+            <div class="navbar-toggle">
+              <button type="button" class="navbar-toggler">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+              </button>
+            </div>
+            <p class="navbar-brand">{% block menu %}Main{% endblock %}</p>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            <ul class="navbar-nav">
+              {% if user.is_superuser %}
+              <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="Admin">
+                <a class="nav-link btn-rotate" href="{% url 'admin:index' %}">
+                  <i class="nc-icon nc-settings"></i>
+                  <p>
+                    <span class="d-lg-none d-md-block">Admin</span>
+                  </p>
+                </a>
+              </li>
+              {% endif %}
+              <li class="nav-item btn-rotate dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {% if user.is_authenticated %}
+                  <img src="{{ user.gravatar }}" width="18" height="18">
+                  {% else %}
+                  <i class="nc-icon nc-circle-10"></i>
+                  {% endif %}
+                  <p>
+                    <span class="d-lg-none d-md-block">Account</span>
+                  </p>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                  {% if not user.is_authenticated %}
+                  <a class="dropdown-item" href="{% url 'account:login' %}">Login</a>
+                  {% else %}
+                  <a class="dropdown-item" href="{% url 'account:profile' user.username %}">Profile</a>
+                  <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
+                  {% endif %}
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+    {% endblock %}
+
+      {% block body %}
+        <!-- Page content -->
+      {% endblock %}
+
+      {% block footer %}
+      <footer class="footer footer-black footer-white ">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="credits ml-auto">
+              <span class="copyright">
+                ©
+                <script>
+                  document.write(new Date().getFullYear())
+                </script> IMS
+              </span>
+            </div>
+          </div>
+        </div>
+      </footer>
+      {% endblock %}
+
+    </div>
+  </div>
+
+{% block script %}
+  <!--   Core JS Files   -->
+  <script src="{% static 'js/core/jquery.min.js' %}"></script>
+  <script src="{% static 'js/core/popper.min.js' %}"></script>
+  <script src="{% static 'js/core/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/plugins/perfect-scrollbar.jquery.min.js' %}"></script>
+  <script src="{% static 'js/plugins/jquery.bootstrap-wizard.js' %}"></script>
+  <script src="{% static 'js/plugins/gsdk-bootstrap-wizard.js' %}"></script>
+  <!-- Chart JS -->
+  <script src="{% static 'js/plugins/chartjs.min.js' %}"></script>
+  <!-- Jquery Validate -->
+  <script src="{% static 'js/plugins/jquery.validate.min.js' %}"></script>
+  <!--  Notifications Plugin    -->
+  <script src="{% static 'js/plugins/bootstrap-notify.js' %}"></script>
+  <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{% static 'js/paper-dashboard.min.js' %}" type="text/javascript"></script>
+  <!-- Paper Dashboard DEMO methods, don't include it in your project! -->
+  <script src="{% static 'demo/demo.js' %}"></script>
+
+  {% endblock %}
+</body>
+
+</html>

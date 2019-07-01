@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% block title %}Host - {{ host }}{% endblock %}
+{% block menu %}Host: {{ host|upper }}{% endblock %}
+
+{% block body %}
+
+<div class="content">
+  <div class="col-md-6 ml-auto mr-auto">
+    <div class="card card-pricing ">
+      <div class="card-header">
+        <div class="card-icon icon-primary ">
+          <i class="nc-icon nc-app"></i>
+        </div>
+      </div>
+      <div class="card-body">
+        <h6 class="text-warning">{{ host }} - {{ host.description }}</h6>
+        <table class="table table-striped">
+          <tr>
+            <td>Groups</td>
+            <td>
+              {% for group in host.groups.all %}
+              <span class="badge badge-pill badge-info">{{ group }}</span>
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td>Environment</td>
+            <th>{{ host.environment }}</th>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <th>
+              {% if host.hoststatus == 'True' %}
+              <span class="badge badge-danger">{{ host.hoststatus }}</span>
+              {% else %}
+              <span class="badge badge-success">{{ host.hoststatus }}</span>
+              {% endif %}
+            </th>
+          </tr>
+          <tr>
+            <td>Last Updated</td>
+            <th>{{ host.updated_at }}</th>
+          </tr>
+        </table>
+      </div>
+      <div class="card-footer">
+        <a href="#pablo" class="btn btn-round btn-primary">Add to Cart</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+<script>
+$(document).ready(function() {
+    $('#hostsNav').addClass('active');
+});
+</script>
+{% endblock %}
+

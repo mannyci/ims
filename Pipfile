@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+python-memcached = "*"
+
+[packages]
+django = "==1.11.5"
+celery = "*"
+markup = "*"
+python-ldap = "*"
+django-auth-ldap = "*"
+
+[requires]
+python_version = "3.6"
