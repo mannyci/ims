@@ -33,7 +33,7 @@ class HostStatus(models.Model):
     class Meta:
         db_table = 'hoststatus'
 
-    host = models.OneToOneField('Host')
+    host = models.OneToOneField('Host', on_delete=models.CASCADE)
     status = models.BooleanField(default=False, verbose_name='Host is rechable')
     updated_at = models.DateTimeField(auto_now=True)
 
