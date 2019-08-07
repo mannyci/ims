@@ -56,13 +56,13 @@ class HostDetail(UpdateView):
     template_name = 'host/update.html'
 
     def get_object(self, **kwargs):
-        self.name = self.kwargs.get("name")
-        if self.name is None:
+        self.id = self.kwargs.get("id")
+        if self.id is None:
             raise Http404
-        return get_object_or_404(Host, name__iexact=self.name)
+        return get_object_or_404(Host, id__iexact=self.id)
 
     def get_success_url(self):
-        messages.success(self.request, 'Host %s updated successfully' % self.name)
+        messages.success(self.request, 'Host %s updated successfully' % self.object.name)
         return reverse('ui:hosts')
 
 

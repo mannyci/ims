@@ -9,7 +9,12 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERYBEAT_SCHEDULE = {
     'hostcheck_scheduler': {
         'task': 'core.tasks.host_status',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(seconds=60),
         'options': {'expires': 20}
-    }
+    },
+    'hostfact_scheduler': {
+        'task': 'core.tasks.host_facts',
+        'schedule': timedelta(seconds=60),
+        'options': {'expires': 20}
+    },
 }
