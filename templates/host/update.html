@@ -24,6 +24,10 @@
               <label>Status</label>
               <p>{{ host.hoststatus }}</p>
             </div>
+            <div class="col-sm-6">
+              <label>Tasks</label>
+              <p>{{ host.facts.all.count }}</p>
+            </div>
             </div>
           </div>
         </div>
