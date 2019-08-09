@@ -14,7 +14,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'hostfact_scheduler': {
         'task': 'core.tasks.host_facts',
-        'schedule': timedelta(seconds=60),
+        'schedule': timedelta(seconds=600),
         'options': {'expires': 20}
     },
 }

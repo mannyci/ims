@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+{% block title %}Update {{ host }}{% endblock %}
+{% block menu %}Update host{% endblock %}
+
+{% block body %}
+<div class="content">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+          <div class="card-body">
+              <div class="toolbar">
+                {% if is_paginated %}
+                  {% include "_pagination.html" %}
+                {% endif %}
+              </div>
+              <table id="hostTable" class="table table-hover table-bordered" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>Task ID</th>
+                  <th>Time</th>
+                  <th>Facts</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for task in tasks %}
+                <tr>
+                  <td>{{ task }}</td>
+                  <td>{{ task.created_at }}</td>
+                  <td>{{ task.facts }}</td>
+                </tr>
+                {% empty %}
+                <p>No facts found</p>
+                {% endfor %}
+              </tbody>
+              </table>
+              {% if is_paginated %}
+                {% include "_pagination.html" %}
+              {% endif %}
+            </div><!-- end content-->
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

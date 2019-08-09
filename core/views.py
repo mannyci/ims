@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.db.models import Count
 from .utils import needs_env
-from .models import Host, Environment
+from .models import Host, Environment, HostFacts
 from .forms import NewHostForm, HostUpdateForm, NewEnvForm, EnvUpdateForm, NewHostGroupForm
 
 
@@ -140,3 +140,20 @@ class HostGroupNew(View):
             return redirect('ui:envs')
 
         return HttpResponse(self.template.render({'form': form}, request), status=400)
+
+class HostFacts(ListView):
+    template_name = 'host/tasks.html'
+    model = HostFacts
+    queryset = HostFacts.objects.all()
+    context_object_name = 'tasks'
+    paginate_by = 25
+    ordering = ['-created_at']
+
+    def get(self, request, *args, **kwagrs):
+        host = request.GET.get('host')
+        self.object_list = self.get_queryset()
+        if host:
+            self.object_list = self.object_list.filter(host=host)
+        
+        context = self.get_context_data()
+        return self.render_to_response(context)

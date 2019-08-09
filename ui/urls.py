@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from .views import SetupView, DashboardView
-from core.views import HostCreate, HostList, HostDetail, HostDelete, EnvNew, EnvList, EnvUpdate, HostGroupNew
+from core.views import HostCreate, HostList, HostDetail, HostDelete, EnvNew, EnvList, EnvUpdate, HostGroupNew, \
+    HostFacts
 
 urlpatterns = [
     url(r'^setup$', view=SetupView.as_view(), name='setup'),
@@ -14,4 +15,5 @@ urlpatterns = [
     url(r'^envs$', view=EnvList.as_view(), name='envs'),
     url(r'^env/(?P<id>[\w-]+)$', view=EnvUpdate.as_view(), name='updateenv'),
     url(r'^hostgroup/new$', view=HostGroupNew.as_view(), name='newhostgroup'),
+    url(r'^facts$', view=HostFacts.as_view(), name='facts'),
 ]
