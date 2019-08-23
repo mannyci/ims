@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import Account
-from django.forms.widgets import PasswordInput, TextInput, EmailInput, CheckboxInput
+from django.forms.widgets import PasswordInput, TextInput, EmailInput, CheckboxInput, Select
 
 
 class LoginForm(AuthenticationForm):
@@ -32,8 +32,12 @@ class ProfileForm(forms.ModelForm):
     email = forms.EmailField(widget=EmailInput(attrs={'class': 'form-control'}))
     first_name = forms.CharField(required=False, widget=TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(required=False, widget=TextInput(attrs={'class': 'form-control'}))
-    is_admin = forms.BooleanField(required=False, widget=CheckboxInput(attrs={'class': 'form-check-input'}))
+    # role = forms.ChoiceField(disabled=True, choices=Account.ROLE_CHOICES, widget=Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = Account
-        fields = ['username', 'email', 'first_name', 'last_name', 'is_admin']
+        fields = ['username', 'email', 'first_name', 'last_name']
+
+    def save(self):
+        print(self.cleaned_data)
+

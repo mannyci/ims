@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import BaseUserManager
 
-
 class AccountManager(BaseUserManager):
     def create_user(self, email, password=None, **kwargs):
         if not email:
@@ -28,12 +27,17 @@ class AccountManager(BaseUserManager):
         account.is_superuser = True
         account.is_staff = True
         account.is_active = True
+        account.role = 2
         account.save()
 
         return account
 
 
 class Account(AbstractUser):
+    ROLE_CHOICES = (
+        (1, 'Member'),
+        (2, 'Admin'),
+    )
     class Meta:
         db_table = 'accounts'
 
@@ -47,12 +51,13 @@ class Account(AbstractUser):
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
+    role = models.PositiveSmallIntegerField(choices=ROLE_CHOICES, default=1)
     objects = AccountManager()
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.email
 
     def get_full_name(self):
@@ -72,3 +77,8 @@ class Account(AbstractUser):
         hash = self.avatar_hash or self.gravatar_hash()
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
+
+    def get_role(self):
+        return self.get_role_display()
+    
+
