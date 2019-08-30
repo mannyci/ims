@@ -5,8 +5,12 @@ import os
 
 
 @task(bind=True)
-def host_status(self):
-    hosts = Host.objects.all()
+def host_status(self, host=None):
+    if host == None:
+        hosts = Host.objects.all()
+    else:
+        hosts = Host.objects.filter(id=host)
+        print(hosts)
     active = 0
     dead = 0
     for host in hosts:

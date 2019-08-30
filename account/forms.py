@@ -38,6 +38,4 @@ class ProfileForm(forms.ModelForm):
         model = Account
         fields = ['username', 'email', 'first_name', 'last_name']
 
-    def save(self):
-        print(self.cleaned_data)
 

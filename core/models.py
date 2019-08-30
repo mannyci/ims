@@ -39,10 +39,7 @@ class HostStatus(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        if self.status is 0:
-            return 'Dead'
-        else:
-            return 'Active'
+        return str(self.status)
 
 
 class Host(models.Model):
@@ -67,6 +64,9 @@ class Host(models.Model):
 
     def get_env_url(self):
         return reverse("ui:updateenv", kwargs={"id": self.environment.id})
+
+    def is_active(self):
+        return self.hoststatus
 
 class HostFacts(models.Model):
     class Meta:

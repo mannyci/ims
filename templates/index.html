@@ -5,107 +5,47 @@
 {% block body %}
   <div class="content">
     <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-body ">
-            <div class="row">
-              <div class="col-5 col-md-4">
-                <div class="icon-big text-center icon-warning">
-                  <i class="nc-icon nc-globe text-warning"></i>
-                </div>
-              </div>
-              <div class="col-7 col-md-8">
-                <div class="numbers">
-                  <p class="card-category">Hosts</p>
-                  <p class="card-title">{{ hosts }}
-                    </p><p>
-                </p></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer ">
-            <hr>
-            <div class="stats">
-              <i class="fa fa-refresh"></i> <a href="{% url 'ui:hosts' %}">View all</a>
-            </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <a href="{% url 'ui:hosts' %}" class="card-icon text-warning">
+              <i class="fas fa-server"></i>
+            </a>
+            <h3 class="card-title">Hosts</h3>
+            <h4 class="card-footer">{{ hosts }}</h4>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-body ">
-            <div class="row">
-              <div class="col-5 col-md-4">
-                <div class="icon-big text-center icon-warning">
-                  <i class="nc-icon nc-money-coins text-success"></i>
-                </div>
-              </div>
-              <div class="col-7 col-md-8">
-                <div class="numbers">
-                  <p class="card-category">Environments</p>
-                  <p class="card-title">{{ envs }}
-                    </p><p>
-                </p></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer ">
-            <hr>
-            <div class="stats">
-              <i class="fa fa-calendar-o"></i> <a href="{% url 'ui:envs' %}">View all</a>
-            </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <a href="{% url 'ui:envs' %}" class="card-icon text-danger">
+              <i class="fas fa-stream"></i>
+            </a>
+            <h3 class="card-title">Environments</h3>
+            <h4 class="card-footer">{{ envs }}</h4>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-body ">
-            <div class="row">
-              <div class="col-5 col-md-4">
-                <div class="icon-big text-center icon-warning">
-                  <i class="nc-icon nc-vector text-danger"></i>
-                </div>
-              </div>
-              <div class="col-7 col-md-8">
-                <div class="numbers">
-                  <p class="card-category">Hostgroups</p>
-                  <p class="card-title">{{ hostgroups }}
-                    </p><p>
-                </p></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer ">
-            <hr>
-            <div class="stats">
-              <i class="fa fa-clock-o"></i> In the last hour
-            </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <a href="{% url 'ui:envs' %}" class="card-icon text-primary">
+              <i class="fas fa-layer-group"></i>
+            </a>
+            <h3 class="card-title">Hostgroups</h3>
+            <h4 class="card-footer">{{ hostgroups }}</h4>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-body ">
-            <div class="row">
-              <div class="col-5 col-md-4">
-                <div class="icon-big text-center icon-warning">
-                  <i class="nc-icon nc-favourite-28 text-primary"></i>
-                </div>
-              </div>
-              <div class="col-7 col-md-8">
-                <div class="numbers">
-                  <p class="card-category">Followers</p>
-                  <p class="card-title">+45K
-                    </p><p>
-                </p></div>
-              </div>
-            </div>
-          </div>
-          <div class="card-footer ">
-            <hr>
-            <div class="stats">
-              <i class="fa fa-refresh"></i> Update now
-            </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <a href="{% url 'ui:envs' %}" class="card-icon text-secondary">
+              <i class="fas fa-layer-group"></i>
+            </a>
+            <h3 class="card-title">Hostgroups</h3>
+            <h4 class="card-footer">{{ hostgroups }}</h4>
           </div>
         </div>
       </div>
@@ -142,7 +82,9 @@
                     {% endfor %}
                   </td>
                   <td>{{ host.updated_at }}</td>
-                  <td>{{ host.hoststatus }}</td>
+                  <td>
+                    <span class="badge badge-default" rel="tooltip">{{ host.is_active }}</span>
+                  </td>
                 </tr>
                 {% empty %}
                 <p>No hosts found</p>
@@ -206,7 +148,7 @@ $(document).ready(function() {
     ctx = document.getElementById('chartEmail').getContext("2d");
 
     myChart = new Chart(ctx, {
-      type: 'pie',
+      type: 'bar',
       data: {
         labels: [{% for env in environments %}'{{ env }}'{% if not forloop.last %},{% endif %}{% endfor %}],
         datasets: [{
@@ -224,29 +166,6 @@ $(document).ready(function() {
 });
 </script>
 
-<!-- Highchart bar -->
-<!-- <script>
-  Highcharts.chart('groupChart', {
-      chart: {
-          type: 'column'
-      },
-      title: {
-          text: 'Hostgroups chart'
-      },
-      xAxis: {
-          categories: [
-            {% for group in groupdata %}'{{ group.name }}'{% if not forloop.last %}, {% endif %}{% endfor %}
-          ]
-      },
-      series: [{
-          name: 'Hosts',
-          data: [
-            {% for group in groupdata %}{{ group.host_count }}{% if not forloop.last %}, {% endif %}{% endfor %}
-          ],
-          color: 'green'
-      }]
-  });
-</script> -->
 <script>
 
 // bar
@@ -271,5 +190,6 @@ $(document).ready(function() {
       },
     })
   });
+  
 </script>
 {% endblock %}

@@ -12,7 +12,7 @@ from django.db.models import Count
 from .utils import needs_env
 from .models import Host, Environment, HostFacts
 from .forms import NewHostForm, HostUpdateForm, NewEnvForm, EnvUpdateForm, NewHostGroupForm
-
+from .tasks import host_status
 
 class HostCreate(CreateView):
     model = Host
@@ -28,6 +28,7 @@ class HostCreate(CreateView):
     def form_valid(self, form):
         form.instance.added_by = self.request.user
         form.save()
+        host_status(host=form.instance.id)
         return super(HostCreate, self).form_valid(form)
 
     def get_success_url(self):
