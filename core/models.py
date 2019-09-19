@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.db import models
 from account.models import Account
+from network.models import Networks
 
 
 class Environment(models.Model):
@@ -55,6 +56,7 @@ class Host(models.Model):
     environment = models.ForeignKey(Environment, on_delete=models.CASCADE)
     groups = models.ManyToManyField(Hostgroup)
     facts = models.ManyToManyField('HostFacts')
+    network = models.ForeignKey(Networks, on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
         return self.name

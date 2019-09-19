@@ -17,4 +17,9 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=600),
         'options': {'expires': 20}
     },
+    'network_update_scheduler': {
+        'task': 'network.tasks.update_network',
+        'schedule': timedelta(seconds=10),
+        'options': {'expires': 20}
+    },
 }

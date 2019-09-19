@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
-{% block title %}Update {{ host }}{% endblock %}
-{% block menu %}Update host{% endblock %}
+{% block title %}Update {{ network }}{% endblock %}
+{% block menu %}Update network{% endblock %}
 
 {% block body %}
 
@@ -30,7 +30,7 @@
             </p>
             <p>
               Added By
-              <span class="badge badge-pill badge-info float-right">{{ host.added_by.get_full_name }}</span>
+              <span class="badge badge-pill badge-info float-right">{{ network.added_by.get_full_name }}</span>
             </p>
             <p>
               Added At
@@ -44,16 +44,20 @@
         {% include "_messages.html" %}
         <div class="card card-user">
           <div class="card-header">
-            <h4 class="card-title"><i class="fas fa-network-wired"></i> {{ host|upper }} - Network details </h4>
+            <h4 class="card-title"><i class="fas fa-network-wired"></i> {{ network|upper }} - Network details </h4>
           </div>
           <div class="card-body ">
             <p>
-              Network
-              <span class="badge badge-pill badge-danger float-right">{{ host.network }} - <small>{{ host.network.description }}</small></span>
+              Subnet
+              <span class="badge badge-pill badge-danger float-right">{{ network.subnet_mask }}</span>
             </p>
             <p>
               Network Prefix
-              <span class="badge badge-pill badge-danger float-right">{{ host.network.prefix }}</small></span>
+              <span class="badge badge-pill badge-danger float-right">{{ network.prefix }}</small></span>
+            </p>
+            <p>
+              Network Size
+              <span class="badge badge-pill badge-danger float-right">{{ network.size }}</small></span>
             </p>
           </div>
         </div>
@@ -65,7 +69,7 @@
         <div class="card">
           {% include "_messages.html" %}
           <div class="card-header">
-            <h4 class="card-title">Update : {{ host }}</h4>
+            <h4 class="card-title">Update : {{ network }}</h4>
           </div>
           <div class="card-body ">
             {% csrf_token %}

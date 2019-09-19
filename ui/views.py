@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Count
 from core.models import Host, Environment, Hostgroup
-
+from network.models import Networks
 
 from .utils import needs_setup
 from .forms import SetupForm
@@ -30,13 +30,15 @@ class DashboardView(LoginRequiredMixin, DetailView):
         recentUpdatedHosts = Host.objects.all().order_by('-updated_at')[:5]
         environments = Environment.objects.all().annotate(host_count=Count('host'))
         groupdata = Hostgroup.objects.all().annotate(host_count=Count('host'))
+        networks = Networks.objects.all().count()
         return HttpResponse(self.template.render({
             'hosts': hosts,
             'envs': envs,
             'hostgroups': hostgroups,
             'recentUpdatedHosts': recentUpdatedHosts,
             'environments': environments,
-            'groupdata': groupdata
+            'groupdata': groupdata,
+            'networks': networks
         }, request))
 
 

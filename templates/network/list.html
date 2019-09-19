@@ -1,0 +1,123 @@
+{% extends 'layout.html' %}
+{% block title %}Network list{% endblock %}
+
+{% block body %}
+
+<div class="content">
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        {% include "_messages.html" %}
+        <div class="card-header">
+          <h4 class="card-title">Networks list</h4>
+          <div class="float-right col-md-3">
+            <span class="bmd-form-group bmd-form-group-sm is-filled">
+              <input type="text" id="userInput" onkeyup="searchHost()" class="form-control form-control-sm" placeholder="Search">
+            </span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="toolbar">
+          </div>
+          <table id="hostTable" class="table table-hover table-bordered" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>IP</th>
+              <th>Prefix</th>
+              <th>Subnet Mask</th>
+              <th>Addded By</th>
+              <th class="disabled-sorting">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for network in networks %}
+            <tr>
+              <td>{{ network.name }}<br><small>{{ network.description }}</small></td>
+              <td>{{ network.ip }}</td>
+              <td>{{ network.prefix }}</td>
+              <td>{{ network.subnet_mask }}</td>
+              <td>{{ network.added_by.username }}</td>
+              <td>
+                <a href="{{ network.get_absolute_url }}" class="btn btn-info btn-sm" rel="tooltip" title="" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                <button type="button" data-toggle="modal" data-target="#deleteModal" class="btn btn-danger btn-sm remove" rel="tooltip" title="" data-original-title="Delete"><i class="fa fa-times"></i></button>
+              </td>
+            </tr>
+            {% empty %}
+            <p>No hosts found</p>
+            {% endfor %}
+          </tbody>
+          </table>
+          {% if is_paginated %}
+            {% include "_pagination.html" %}
+          {% endif %}
+        </div><!-- end content-->
+      </div><!--  end card  -->
+    </div> <!-- end col-md-12 -->
+  </div> <!-- end row -->
+
+</div>
+
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal">
+  <div class="modal-dialog" role="document">
+    <form id="deleteHostForm" action="" method="post">{% csrf_token %}
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h5 class="modal-title text-left" id="exampleModalLabel">Delete Host</h5>
+      </div>
+      <div class="modal-body text-left">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ block.super }}
+
+<script>
+function searchHost() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("userInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("hostTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+
+$('.remove').click(function (e) {
+  host = $(this).closest('tr').find('td:first').html();
+  host = host.split('<br>')[0];
+  $("#deleteHostForm").attr("action", "/host/delete/" + host);
+  $('#deleteModal .modal-body').html('Delete ' + host + ' ?');
+
+});
+
+$(document).ready(function() {
+    $('#hostsNav').addClass('active');
+});
+</script>
+{% endblock %}

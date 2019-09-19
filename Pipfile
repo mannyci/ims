@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 django = ">2.2"
 celery = "*"
+django-import-export = "*"
+netaddr = "*"
 
 [requires]
 python_version = "3.7"
