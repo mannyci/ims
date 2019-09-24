@@ -24,12 +24,10 @@ class NewHostForm(forms.ModelForm):
         network = self.cleaned_data['network']
         ip = self.cleaned_data['ip']
         name = self.cleaned_data['name']
-        error_messages = []
 
         # Check if IP belongs to the network
         net = IPv4Network('{0}/{1}'.format(network.ip, network.prefix))
         if not IPv4Address(ip) in net:
-            print(network.ip, network.prefix)
             self._errors["network"] = mark_safe(('IP {0} is not part of the network selected <strong>{1}</strong>.').format(ip, net))
 
         # Check if IP belongs to other host
@@ -57,6 +55,23 @@ class HostUpdateForm(forms.ModelForm):
         model = Host
         fields = ['name', 'description', 'ip', 'environment', 'groups', 'network']
 
+    def clean(self):
+        network = self.cleaned_data['network']
+        ip = self.cleaned_data['ip']
+        name = self.cleaned_data['name']
+
+        # Check if IP belongs to the network
+        net = IPv4Network('{0}/{1}'.format(network.ip, network.prefix))
+        if not IPv4Address(ip) in net:
+            self._errors["network"] = mark_safe(('IP {0} is not part of the network selected <strong>{1}</strong>.').format(ip, net))
+
+        # Check if IP belongs to other host
+        if Host.objects.filter(ip=ip, ip__iexact=ip).exists():
+            host = Host.objects.get(ip=ip)
+            if not name == host.name:
+                self._errors["ip"] = mark_safe(('Host with this IP exists, click <a href="{0}">here</a>').format(host.id))
+
+        return self.cleaned_data
 
 class NewEnvForm(forms.ModelForm):
     name = forms.CharField(required=True, widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'Env name'}))
