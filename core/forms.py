@@ -28,7 +28,7 @@ class NewHostForm(forms.ModelForm):
         # Check if IP belongs to the network
         net = IPv4Network('{0}/{1}'.format(network.ip, network.prefix))
         if not IPv4Address(ip) in net:
-            self._errors["network"] = mark_safe(('IP {0} is not part of the network selected <strong>{1}</strong>.').format(ip, net))
+            self._errors["network"] = mark_safe(('IP <strong{0}</strong> is not part of the network selected <strong>{1}</strong>.').format(ip, net))
 
         # Check if IP belongs to other host
         if Host.objects.filter(ip=ip, ip__iexact=ip).exists():
@@ -63,14 +63,13 @@ class HostUpdateForm(forms.ModelForm):
         # Check if IP belongs to the network
         net = IPv4Network('{0}/{1}'.format(network.ip, network.prefix))
         if not IPv4Address(ip) in net:
-            self._errors["network"] = mark_safe(('IP {0} is not part of the network selected <strong>{1}</strong>.').format(ip, net))
+            self.add_error('network', mark_safe(('IP <strong>{0}</strong> is not part of the network selected <strong>{1}</strong>.').format(ip, net)))
 
         # Check if IP belongs to other host
         if Host.objects.filter(ip=ip, ip__iexact=ip).exists():
             host = Host.objects.get(ip=ip)
             if not name == host.name:
-                self._errors["ip"] = mark_safe(('Host with this IP exists, click <a href="{0}">here</a>').format(host.id))
-
+                self.add_error('ip', mark_safe(('Host with this IP exists, click <a href="{0}">here</a>').format(host.id)))
         return self.cleaned_data
 
 class NewEnvForm(forms.ModelForm):

@@ -6,61 +6,56 @@
 
 <div class="content">
   <div class="row">
-    <div class="flex-column">
-      <div class="col-md-12">
-        {% include "_messages.html" %}
-        <div class="card card-user">
-          <div class="card-header">
-            <h4 class="card-title"><i class="fas fa-laptop"></i> {{ host|upper }} </h4>
-          </div>
-          <div class="card-body ">
-            <p>
-              Last checked
-              <span class="float-right">{{ host.updated_at }}</span>
-            </p>
-            <p>
-              Status
-              <span class="badge badge-pill badge-warning float-right">{{ host.hoststatus }}</span>
-            </p>
-            <p>
-              Tasks
-              <a href="{% url 'ui:facts' %}?host={{ host.id }}" class="float-right">
-                <span class="badge badge-pill badge-primary">{{ host.facts.all.count }}</span>
-              </a>
-            </p>
-            <p>
-              Added By
-              <span class="badge badge-pill badge-info float-right">{{ host.added_by.get_full_name }}</span>
-            </p>
-            <p>
-              Added At
-              <span class="badge badge-pill badge-info float-right">{{ host.created_at }}</span>
-            </p>
-          </div>
+    <div class="flex-column col-md-4">
+      <div class="card card-user">
+        <div class="card-header">
+          <h4 class="card-title"><i class="fas fa-laptop"></i> {{ host|upper }} </h4>
+        </div>
+        <div class="card-body ">
+          <p>
+            Last checked
+            <span class="float-right">{{ host.updated_at }}</span>
+          </p>
+          <p>
+            Status
+            <span class="badge badge-pill badge-warning float-right">{{ host.hoststatus }}</span>
+          </p>
+          <p>
+            Tasks
+            <a href="{% url 'ui:facts' %}?host={{ host.id }}" class="float-right">
+              <span class="badge badge-pill badge-primary">{{ host.facts.all.count }}</span>
+            </a>
+          </p>
+          <p>
+            Added By
+            <span class="badge badge-pill badge-info float-right">{{ host.added_by.get_full_name }}</span>
+          </p>
+          <p>
+            Added At
+            <span class="badge badge-pill badge-info float-right">{{ host.created_at }}</span>
+          </p>
         </div>
       </div>
 
-      <div class="col-md-12">
-        {% include "_messages.html" %}
-        <div class="card card-user">
-          <div class="card-header">
-            <h4 class="card-title"><i class="fas fa-network-wired"></i> {{ host|upper }} - Network details </h4>
-          </div>
-          <div class="card-body ">
-            <p>
-              Network
-              <span class="badge badge-pill badge-danger float-right">{{ host.network }} - <small>{{ host.network.description }}</small></span>
-            </p>
-            <p>
-              Network Prefix
-              <span class="badge badge-pill badge-danger float-right">{{ host.network.prefix }}</small></span>
-            </p>
-          </div>
+      <div class="card card-user">
+        <div class="card-header">
+          <h4 class="card-title"><i class="fas fa-network-wired"></i> {{ host|upper }} - Network details </h4>
+        </div>
+        <div class="card-body ">
+          <p>
+            Network
+            <span class="badge badge-pill badge-danger float-right">{{ host.network }} - <small>{{ host.network.description }}</small></span>
+          </p>
+          <p>
+            Network Prefix
+            <span class="badge badge-pill badge-danger float-right">{{ host.network.prefix }}</small></span>
+          </p>
         </div>
       </div>
+
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-8">
       <form method="POST">
         <div class="card">
           {% include "_messages.html" %}
@@ -80,6 +75,7 @@
         </div>
       </form>
     </div>
+    
   </div>
 </div>
 

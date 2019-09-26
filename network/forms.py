@@ -15,19 +15,21 @@ class NewNetworkForm(forms.ModelForm):
         model = Networks
         fields = ['name', 'description', 'ip', 'prefix']
 
-    def clean_ip(self):
+    def clean(self):
         ip = self.cleaned_data['ip']
+        prefix = self.cleaned_data['prefix']
+        
         if Networks.objects.filter(ip=ip, ip__iexact=ip).exists():
             network = Networks.objects.get(ip=ip)
-            raise ValidationError(
+            self.add_error(
+                'ip', 
                 mark_safe(('Network with that ip already exists, click <a href="{0}">here</a>').format(network.id))
             )
-        return ip
-
-    def clean_prefix(self):
-        prefix = self.cleaned_data['prefix']
+            
         if (prefix < 8 or prefix > 30):
-            raise ValidationError(
+            self.add_error(
+                'prefix', 
                 mark_safe('Network prefix must be within range <strong>8-30</strong>.')
             )
-        return prefix
+            
+        return self.cleaned_data
