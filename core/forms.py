@@ -14,7 +14,7 @@ class NewHostForm(forms.ModelForm):
     ip = forms.GenericIPAddressField(widget=TextInput(attrs={'class': 'form-control', 'placeholder': 'IP'}))
     environment = forms.ModelChoiceField(queryset=Environment.objects.all(), widget=Select(attrs={'class': 'form-control'}))
     groups = forms.ModelMultipleChoiceField(required=False, queryset=Hostgroup.objects.all(), widget=SelectMultiple(attrs={'class': 'form-control'}), help_text='Select multiple groups')
-    network = forms.ModelChoiceField(queryset=Networks.objects.all(), widget=Select(attrs={'class': 'form-control'}))
+    network = forms.ModelChoiceField(queryset=Networks.objects.all(), widget=Select(attrs={'class': 'form-control'}), help_text='IP must belong to the selected netwrok')
 
     class Meta:
         model = Host
@@ -38,7 +38,8 @@ class NewHostForm(forms.ModelForm):
         # Check if host already exists
         if Host.objects.filter(name=name, name__iexact=name).exists():
             self._errors["name"] = mark_safe(('Host with this name exists.').format(name))
-
+        
+        print(self.cleaned_data)
         return self.cleaned_data
 
 
